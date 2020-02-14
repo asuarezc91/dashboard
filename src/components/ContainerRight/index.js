@@ -1,41 +1,24 @@
 import React, { useState } from "react";
-import { MainMenu, DataDashboard, TextData, Content } from "./styles";
+import { MainMenu, DataDashboard, TextData, Content, TextTittle } from "./styles";
 import Query from "esri/tasks/support/Query";
 import QueryTask from "esri/tasks/QueryTask";
 
 
 export const ContainerRight = () => {
-  const [list, setCount] = useState([
-    {
-      title: "React",
-      url: "https://facebook.github.io/react/",
-      author: "Jordan Walke",
-      num_comments: 3,
-      points: 4,
-      objectID: 0
-    },
-    {
-      title: "man",
-      url: "https://facebook.github.io/react/",
-      author: "man Walke",
-      num_comments: 6,
-      points: 8,
-      objectID: 10
-    }
-  ]);
+  const [list, setCount] = useState([]);
+
+  const dataArray = [];
 
   async function calculate() {
-    const dataArray = [];
-    let testArray = [];
-
     const municipalities = ["'Riba-roja de Túria'", "'Almussafes'", "'Sagunto/Sagunt'"];
     for (let i = 0; i < municipalities.length; i++) {
-      //Se van a crear tantos objetos como municipios haya
+      //Create new objets to each new municipalitie
       let objetData = {
+        "Municipio": "",
         "Superficie Polígonos": "",
         "Superficie Activos": "",
         "Precio medio de venta": "",
-        "Precio medio de alquiler": ""
+        "Precio medio de alquiler": "",
       }
       const query = new Query();
       query.returnGeometry = false;
@@ -52,12 +35,15 @@ export const ContainerRight = () => {
         if (urlQuery.includes("suelo_ind_spatial_50km")) {
           //POLYGONS
           let superficiesPol = [];
-          query.outFields = ["superficie"]
+          let municipalitiesTittle = [];
+          query.outFields = ["superficie,NAMEUNIT"]
           await queryTask.execute(query).then(function (results) {
             const result = results.features;
             for (const [index] of result.entries()) {
               let superficie = result[index].attributes.superficie;
+              let municipio = result[index].attributes.NAMEUNIT;
               superficiesPol.push(superficie.toFixed(1));
+              municipalitiesTittle.push(municipio);
             }
             let sumP = 0;
             for (let i = 0; i < superficiesPol.length; i++) {
@@ -66,7 +52,7 @@ export const ContainerRight = () => {
             }
             console.log("la superficie de todos los polígonos es es:" + " " + sumP);
             objetData["Superficie Polígonos"] = sumP;
-
+            objetData["Municipio"] = municipalitiesTittle[0];
           });
         }
         else {
@@ -96,43 +82,41 @@ export const ContainerRight = () => {
             objetData["Superficie Activos"] = sumA;
             objetData["Precio medio de venta"] = preciosMedios[0];
             objetData["Precio medio de alquiler"] = preciosMedioAlq[0];
-            testArray.push(sumA);
-            console.log(testArray);
-
           });
-
-          fusion(objetData);
-
-          function fusion(objetData) {
+          fill(objetData);
+          function fill(objetData) {
             dataArray.push(objetData);
             console.log(dataArray);
+            const isNotId = item => item !== "a";
+            const updatedList = list.filter(isNotId);
+            const newList = dataArray;
+            setCount(updatedList);
+            setCount(newList);
           }
-
         }
-
- 
-
-
-
       }
-
-
-
     }
-
-
-
-
   };
-  calculate();
 
+  window.onload = function () {
+    calculate();
+  };
 
   return (
     <MainMenu>
+      <Content> <DataDashboard><TextTittle>Municipio</TextTittle> </DataDashboard>
+        <DataDashboard><TextTittle>Superficie Disponible</TextTittle> </DataDashboard>
+        <DataDashboard><TextTittle>Superficie Polígonos</TextTittle> </DataDashboard>
+        <DataDashboard><TextTittle>Precio medio venta</TextTittle> </DataDashboard>
+        <DataDashboard><TextTittle>Precio medio alquiler</TextTittle> </DataDashboard>
+      </Content>
       {list.map(item => (
         <Content>
-          <DataDashboard><TextData>{item.title}</TextData> </DataDashboard>
-          <DataDashboard><TextData>{item.points}</TextData> </DataDashboard>
+          <DataDashboard><TextData>{item["Municipio"]}</TextData> </DataDashboard>
+          <DataDashboard><TextData>{item["Superficie Activos"]}</TextData> </DataDashboard>
+          <DataDashboard><TextData>{item["Superficie Polígonos"]}</TextData> </DataDashboard>
+          <DataDashboard><TextData>{item["Precio medio de venta"]}</TextData> </DataDashboard>
+          <DataDashboard><TextData>{item["Precio medio de alquiler"]}</TextData> </DataDashboard>
         </Content>
       ))}
     </MainMenu>
