@@ -2,6 +2,7 @@ import WebMap from "esri/WebMap";
 import MapView from "esri/views/MapView";
 import Search from "esri/widgets/Search";
 import FeatureLayer from "esri/layers/FeatureLayer";
+import esriConfig from "esri/config";
 import Map from "esri/Map";
 
 // const noop = () => {};
@@ -15,38 +16,31 @@ export const map = new Map({
 });
 
 
-export const view = new MapView({
-  map: map,
-  container: "viewDiv",
-  center: [-5.9, 37.3],
-  zoom: 6
+esriConfig.portalUrl = "https://sagi.maps.arcgis.com/";
+
+
+
+const webmap = new WebMap({
+  portalItem: {
+    id: "83880c81090d47c88ae2661114297169"
+  }
 });
 
 
 
-// ESRI 
 
-// export const webmap = new WebMap({
-//   portalItem: {
-//     id: "974c6641665a42bf8a57da08e607bb6f"
-//   }
-// });
+export const view = new MapView({
+  map: webmap,
+  container: "viewDiv",
+  center: [4.31, 39.87],
+  // zoom: 6
+});
 
-// export const view = new MapView({
-//   map: webmap
-// });
 
-// export const search = new Search({ view });
-// view.ui.add(search, "top-right");
 
 export const initialize = container => {
   view.container = container;
   view;
-  // .when()
-  // .then(_ => {
-  //   console.log("Map and View are ready");
-  // })
-  // .catch(noop);
   return () => {
     view.container = null;
   };

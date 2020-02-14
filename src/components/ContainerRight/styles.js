@@ -18,7 +18,7 @@ export const Content = styled.div`
 export const DataDashboard = styled.div`
   display: flex;
   justify-content: center;
-  aling-items: center;
+  align-content: center;
   width: 200px;
   height: 40px;
   background: #262626;
@@ -27,10 +27,14 @@ export const DataDashboard = styled.div`
 
 export const TextData = styled.p`
   color: #BFBFBF;
+  position: relative;
+  top: 8px;
 `;
 
 
 export const TextTittle = styled.p`
   color: #BFBFBF;
   font-weight: bold;
+  position: relative;
+  top: 8px;
 `;
