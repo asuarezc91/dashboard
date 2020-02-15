@@ -8,7 +8,7 @@ import Map from "esri/Map";
 // const noop = () => {};
 
 const url =
-  "https://services8.arcgis.com/o9xiVBMM7LVPq4Xx/ArcGIS/rest/services/spatial_selection_50km/FeatureServer/0";
+  "https://services8.arcgis.com/o9xiVBMM7LVPq4Xx/arcgis/rest/services/spatial_selection_50km_symbol/FeatureServer/0";
 export const fl = new FeatureLayer(url);
 export const map = new Map({
   basemap: "dark-gray",
@@ -22,7 +22,7 @@ esriConfig.portalUrl = "https://sagi.maps.arcgis.com/";
 
 const webmap = new WebMap({
   portalItem: {
-    id: "83880c81090d47c88ae2661114297169"
+    id: "2aed41401f84481a8ffe98a296a8ceb8"
   }
 });
 
@@ -32,7 +32,7 @@ const webmap = new WebMap({
 export const view = new MapView({
   map: webmap,
   container: "viewDiv",
-  center: [4.31, 39.87],
+  center: [6.02, 39.9],
   // zoom: 6
 });
 

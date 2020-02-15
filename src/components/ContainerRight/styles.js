@@ -8,6 +8,10 @@ export const MainMenu = styled.div`
   background: #0D0D0D;
   display: flex; 
   flex-direction: column;
+  @media (max-width: 1024px) {
+    width: 600px;
+  }
+   
 `;
 
 export const Content = styled.div`
@@ -23,12 +27,20 @@ export const DataDashboard = styled.div`
   height: 40px;
   background: #262626;
   margin: 10px; 
+  border-style: solid;
+  border-width: 1px;
+  border-color: #BFBFBF;
+
 `;
+
 
 export const TextData = styled.p`
   color: #BFBFBF;
   position: relative;
   top: 8px;
+  @media (max-width: 1024px) {
+    font-size: 9px;
+  }
 `;
 
 
@@ -37,4 +49,7 @@ export const TextTittle = styled.p`
   font-weight: bold;
   position: relative;
   top: 8px;
+  @media (max-width: 1024px) {
+    font-size: 9px;
+  }
 `;

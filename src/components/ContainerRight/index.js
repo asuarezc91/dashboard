@@ -42,7 +42,7 @@ export const ContainerRight = () => {
             for (const [index] of result.entries()) {
               let superficie = result[index].attributes.superficie;
               let municipio = result[index].attributes.NAMEUNIT;
-              superficiesPol.push(superficie.toFixed(1));
+              superficiesPol.push(superficie);
               municipalitiesTittle.push(municipio);
             }
             let sumP = 0;
@@ -50,10 +50,11 @@ export const ContainerRight = () => {
               const element = Number(superficiesPol[i]);
               sumP += element;
             }
-            console.log("la superficie de todos los polígonos es es:" + " " + sumP);
-            objetData["Superficie Polígonos"] = sumP;
+            const fixed = sumP.toFixed(2)
+            console.log("la superficie de todos los polígonos es es:" + " " + fixed);
+            objetData["Superficie Polígonos"] = fixed;
             objetData["Municipio"] = municipalitiesTittle[0];
-          });
+          }); 
         }
         else {
           //ACTIVES
@@ -105,18 +106,18 @@ export const ContainerRight = () => {
   return (
     <MainMenu>
       <Content> <DataDashboard><TextTittle>Municipio</TextTittle> </DataDashboard>
-        <DataDashboard><TextTittle>Superficie Disponible</TextTittle> </DataDashboard>
-        <DataDashboard><TextTittle>Superficie Polígonos</TextTittle> </DataDashboard>
+        <DataDashboard><TextTittle>Superficie disponible</TextTittle> </DataDashboard>
+        <DataDashboard><TextTittle>Superficie polígonos</TextTittle> </DataDashboard>
         <DataDashboard><TextTittle>Precio medio venta</TextTittle> </DataDashboard>
         <DataDashboard><TextTittle>Precio medio alquiler</TextTittle> </DataDashboard>
       </Content>
       {list.map(item => (
         <Content>
           <DataDashboard><TextData>{item["Municipio"]}</TextData> </DataDashboard>
-          <DataDashboard><TextData>{item["Superficie Activos"]}</TextData> </DataDashboard>
-          <DataDashboard><TextData>{item["Superficie Polígonos"]}</TextData> </DataDashboard>
-          <DataDashboard><TextData>{item["Precio medio de venta"]}</TextData> </DataDashboard>
-          <DataDashboard><TextData>{item["Precio medio de alquiler"]}</TextData> </DataDashboard>
+          <DataDashboard><TextData>{item["Superficie Activos"]} m²</TextData> </DataDashboard>
+          <DataDashboard><TextData>{item["Superficie Polígonos"]} m²</TextData> </DataDashboard>
+          <DataDashboard><TextData>{item["Precio medio de venta"]} € m² </TextData> </DataDashboard>
+          <DataDashboard><TextData>{item["Precio medio de alquiler"]} € m² </TextData> </DataDashboard>
         </Content>
       ))}
     </MainMenu>
