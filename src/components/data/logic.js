@@ -32,7 +32,7 @@ const webmap = new WebMap({
 export const view = new MapView({
   map: webmap,
   container: "viewDiv",
-  center: [6.02, 39.9],
+  // center: [6.02, 39.9],
   // zoom: 6
 });
 

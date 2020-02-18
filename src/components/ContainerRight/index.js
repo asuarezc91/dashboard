@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { MainMenu, DataDashboard, TextData, Content, TextTittle } from "./styles";
+import { MainMenu, DataDashboard, TextData, Content, TextTittle, Scroll } from "./styles";
 import Query from "esri/tasks/support/Query";
 import QueryTask from "esri/tasks/QueryTask";
 
@@ -7,10 +7,41 @@ import QueryTask from "esri/tasks/QueryTask";
 export const ContainerRight = () => {
   const [list, setCount] = useState([]);
 
-  const dataArray = [];
+  async function obtainMunicipalities() {
+    const urlQuery =
+      "https://services8.arcgis.com/o9xiVBMM7LVPq4Xx/arcgis/rest/services/spatial_selection_50km_symbol/FeatureServer/0"
+    const queryTask = new QueryTask({
+      url: urlQuery
+    });
 
-  async function calculate() {
-    const municipalities = ["'Riba-roja de Túria'", "'Almussafes'", "'Sagunto/Sagunt'"];
+    let namesMun = [];
+    const query = new Query();
+    query.where = "type_area = 'metropolitan'";
+    query.outFields = ["NAMEUNIT"]
+    await queryTask.execute(query).then(function (results) {
+      const result = results.features;
+      for (const [index] of result.entries()) {
+        let municipioName = result[index].attributes.NAMEUNIT;
+        if (municipioName === "Atzeneta d'Albaida") {
+          municipioName = "Atzeneta d" + '"' + "Albaida";
+        }
+        namesMun.push("'" + municipioName + "'");
+      }
+    });
+
+    let municipalities = [...new Set(namesMun)];
+    console.log(municipalities);
+    calculate(municipalities);
+
+
+  }
+
+
+
+  const dataArray = [];
+  async function calculate(municipalities) {
+    // const municipalities2 = ["'Sagunto/Sagunt'", "'Náquera'", "'Bétera'", "'Riba-roja de Túria'", "'Almussafes'", "'Puçol'", "'el Puig de Santa Maria'", "'Rafelbunyol'",
+    //   "'Museros'", "'Moncada'", "'Massamagrell'", "'la Pobla de Farnals'", "'San Antonio de Benagéber'", "'Agullent'"];
     for (let i = 0; i < municipalities.length; i++) {
       //Create new objets to each new municipalitie
       let objetData = {
@@ -54,7 +85,7 @@ export const ContainerRight = () => {
             console.log("la superficie de todos los polígonos es es:" + " " + fixed);
             objetData["Superficie Polígonos"] = fixed;
             objetData["Municipio"] = municipalitiesTittle[0];
-          }); 
+          });
         }
         else {
           //ACTIVES
@@ -100,7 +131,7 @@ export const ContainerRight = () => {
   };
 
   window.onload = function () {
-    calculate();
+    obtainMunicipalities();
   };
 
   return (
@@ -111,15 +142,17 @@ export const ContainerRight = () => {
         <DataDashboard><TextTittle>Precio medio venta</TextTittle> </DataDashboard>
         <DataDashboard><TextTittle>Precio medio alquiler</TextTittle> </DataDashboard>
       </Content>
-      {list.map(item => (
-        <Content>
-          <DataDashboard><TextData>{item["Municipio"]}</TextData> </DataDashboard>
-          <DataDashboard><TextData>{item["Superficie Activos"]} m²</TextData> </DataDashboard>
-          <DataDashboard><TextData>{item["Superficie Polígonos"]} m²</TextData> </DataDashboard>
-          <DataDashboard><TextData>{item["Precio medio de venta"]} € m² </TextData> </DataDashboard>
-          <DataDashboard><TextData>{item["Precio medio de alquiler"]} € m² </TextData> </DataDashboard>
-        </Content>
-      ))}
+      <Scroll>
+        {list.map(item => (
+          <Content>
+            <DataDashboard><TextData>{item["Municipio"]}</TextData> </DataDashboard>
+            <DataDashboard><TextData>{item["Superficie Activos"]} m²</TextData> </DataDashboard>
+            <DataDashboard><TextData>{item["Superficie Polígonos"]} m²</TextData> </DataDashboard>
+            <DataDashboard><TextData>{item["Precio medio de venta"]} € m² </TextData> </DataDashboard>
+            <DataDashboard><TextData>{item["Precio medio de alquiler"]} € m² </TextData> </DataDashboard>
+          </Content>
+        ))}
+      </Scroll>
     </MainMenu>
   );
 };
