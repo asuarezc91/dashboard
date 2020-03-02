@@ -107,7 +107,7 @@ export const ContainerRight = () => {
               const element = Number(superficiesPol[i]);
               sumP += element;
             }
-            const fixed = sumP.toFixed(2)
+            const fixed = sumP.toFixed()
             console.log("la superficie de todos los polígonos es es:" + " " + fixed);
             objetData["Superficie Polígonos"] = fixed;
             objetData["Municipio"] = municipalitiesTittle[0];
@@ -125,7 +125,7 @@ export const ContainerRight = () => {
               let superficie = result[index].attributes.superficie
               let precioMedio = result[index].attributes.pre_med;
               let precioMedioAlq = result[index].attributes.pred_med_a;
-              superficiesAct.push(superficie.toFixed(2));
+              superficiesAct.push(superficie.toFixed());
               preciosMedios.push(precioMedio);
               preciosMedioAlq.push(precioMedioAlq);
             }
