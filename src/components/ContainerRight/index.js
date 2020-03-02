@@ -8,16 +8,41 @@ export const ContainerRight = () => {
   const [list, setCount] = useState([]);
 
   async function obtainMunicipalities() {
+    //   const urlQuery =
+    //     "https://services8.arcgis.com/o9xiVBMM7LVPq4Xx/arcgis/rest/services/spatial_selection_50km_symbol/FeatureServer/0"
+    //   const queryTask = new QueryTask({
+    //     url: urlQuery
+    //   });
+
+    //   let namesMun = [];
+    //   const query = new Query();
+    //   query.where = "type_area = 'metropolitan'";
+    //   query.outFields = ["NAMEUNIT"]
+    //   await queryTask.execute(query).then(function (results) {
+    //     const result = results.features;
+    //     for (const [index] of result.entries()) {
+    //       let municipioName = result[index].attributes.NAMEUNIT;
+    //       if (municipioName === "Atzeneta d'Albaida") {
+    //         municipioName = "Atzeneta d" + '"' + "Albaida";
+    //       }
+    //       namesMun.push("'" + municipioName + "'");
+    //     }
+    //   });
+
+    //   let municipalities = [...new Set(namesMun)];
+    //   console.log(municipalities);
+
+
     const urlQuery =
-      "https://services8.arcgis.com/o9xiVBMM7LVPq4Xx/arcgis/rest/services/spatial_selection_50km_symbol/FeatureServer/0"
+      "https://services8.arcgis.com/o9xiVBMM7LVPq4Xx/arcgis/rest/services/actives/FeatureServer/0"
     const queryTask = new QueryTask({
       url: urlQuery
     });
 
     let namesMun = [];
     const query = new Query();
-    query.where = "type_area = 'metropolitan'";
-    query.outFields = ["NAMEUNIT"]
+    query.where = "1=1";
+    query.outFields = "NAMEUNIT";
     await queryTask.execute(query).then(function (results) {
       const result = results.features;
       for (const [index] of result.entries()) {
@@ -31,8 +56,9 @@ export const ContainerRight = () => {
 
     let municipalities = [...new Set(namesMun)];
     console.log(municipalities);
-    calculate(municipalities);
 
+    //necesitamos saber cual es la longitud de este array para ver si realmente está soltando los 259 o se queda en los 50
+    calculate(municipalities);
 
   }
 
